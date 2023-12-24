@@ -1,0 +1,4 @@
+name: TelegramBridge
+version: 0.0.1-SNAPSHOT
+main: me.redteapot.tgbridge.TelegramBridgePlugin
+api-version: '1.20'
