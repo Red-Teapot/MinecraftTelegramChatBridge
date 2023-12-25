@@ -1,0 +1,19 @@
+# Settings for the Telegram side
+telegram:
+  botUsername: MinecraftTGBridgeBot
+  botToken: 1234
+  chatID: 1234
+  threadID: 1234
+  messageTemplate: "TODO"
+
+# Settings for the Minecraft side
+mc:
+  # Template of messages to be posted in Minecraft chat.
+  # Supported substitutions:
+  # {firstName} - user's first name
+  # {lastName} - user's last name
+  # {fullName} - user's first and last name separated with space
+  # {username} - username
+  # {message} - message
+  # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  messageTemplate: "§b[TG]§r <{fullName}> {message}"
