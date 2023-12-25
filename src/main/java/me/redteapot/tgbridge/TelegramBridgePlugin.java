@@ -3,26 +3,44 @@ package me.redteapot.tgbridge;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
+import java.util.logging.Level;
 
 @SuppressWarnings("unused")
 public class TelegramBridgePlugin extends JavaPlugin {
-    private TelegramBotsApi api;
-    private BridgeTelegramBot bridgeTelegramBot;
+    private BotSession telegramBotSession = null;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
 
+        if (telegramBotSession != null) {
+            return;
+        }
+
         try {
-            api = new TelegramBotsApi(DefaultBotSession.class);
-            bridgeTelegramBot = new BridgeTelegramBot(
+            BridgeTelegramBot bridgeTelegramBot = new BridgeTelegramBot(
                     BridgeBotConfig.fromSpigotConfiguration(getConfig()),
-                    getServer()
+                    this
             );
-            api.registerBot(bridgeTelegramBot);
+            TelegramBotsApi api = new TelegramBotsApi(DefaultBotSession.class);
+            telegramBotSession = api.registerBot(bridgeTelegramBot);
+            getServer().getPluginManager().registerEvents(bridgeTelegramBot, this);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+            getLogger().log(Level.SEVERE, "Could not initialize Telegram API", e);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        try {
+            telegramBotSession.stop();
+        } catch (Exception e) {
+            getLogger().log(Level.WARNING, "Exception while stopping Telegram bot session", e);
+        } finally {
+            telegramBotSession = null;
         }
     }
 }

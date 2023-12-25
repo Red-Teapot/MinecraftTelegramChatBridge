@@ -4,11 +4,14 @@ telegram:
   botToken: 1234
   chatID: 1234
   threadID: 1234
-  messageTemplate: "TODO"
+  # Template of messages to be posted in Telegram chat. MarkdownV2 is supported.
+  # {username} - player name
+  # {message} - message
+  messageTemplate: "*{username}*:\n{message}"
 
 # Settings for the Minecraft side
 mc:
-  # Template of messages to be posted in Minecraft chat.
+  # Template of messages to be posted in Minecraft chat. Formatting codes are supported.
   # Supported substitutions:
   # {firstName} - user's first name
   # {lastName} - user's last name
