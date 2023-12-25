@@ -1,23 +1,24 @@
 package me.redteapot.tgbridge;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class BridgeTelegramBot extends TelegramLongPollingBot implements Listener {
-    private final BridgeBotConfig config;
-    private final TelegramBridgePlugin plugin;
+public class BridgeTelegramBot extends TelegramLongPollingBot implements MessageSender {
+    private final PluginConfig config;
+    private final Logger logger;
+    private final MessageSender minecraftMessageSender;
 
-    public BridgeTelegramBot(BridgeBotConfig config, TelegramBridgePlugin plugin) {
+    public BridgeTelegramBot(Logger logger, PluginConfig config, MessageSender minecraftMessageSender) {
         super(config.token());
+        this.logger = logger;
         this.config = config;
-        this.plugin = plugin;
+        this.minecraftMessageSender = minecraftMessageSender;
     }
 
     @Override
@@ -32,32 +33,23 @@ public class BridgeTelegramBot extends TelegramLongPollingBot implements Listene
                 return;
             }
 
-            final String renderedText = config.mcMessageTemplate().render(message);
-            plugin.getLogger().log(Level.FINE, "Rendered Minecraft message:\n" + renderedText);
+            final String renderedMessage = config.mcMessageTemplate().render(message);
+            logger.log(Level.FINE, "Rendered Minecraft message:\n" + renderedMessage);
 
-            plugin.getServer().broadcastMessage(renderedText);
+            minecraftMessageSender.send(renderedMessage);
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Could not send Minecraft message", e);
+            logger.log(Level.WARNING, "Could not send Minecraft message", e);
         }
     }
 
-    @SuppressWarnings("unused")
-    @EventHandler
-    public void onPlayerMessage(AsyncPlayerChatEvent event) {
-        try {
-            final String renderedText = config.tgMessageTemplate().render(event);
-            plugin.getLogger().log(Level.FINE, "Rendered Telegram message:\n" + renderedText);
-
-            SendMessage message = new SendMessage();
-            message.setChatId(config.chatID());
-            message.setMessageThreadId(config.threadID());
-            message.setText(renderedText);
-            message.setParseMode("MarkdownV2");
-
-            execute(message);
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Could not send Telegram message", e);
-        }
+    @Override
+    public void send(String message) throws TelegramApiException {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(config.chatID());
+        sendMessage.setMessageThreadId(config.threadID());
+        sendMessage.setText(message);
+        sendMessage.setParseMode("MarkdownV2");
+        execute(sendMessage);
     }
 
     @Override

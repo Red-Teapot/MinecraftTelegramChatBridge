@@ -21,13 +21,22 @@ public class TelegramBridgePlugin extends JavaPlugin {
         }
 
         try {
-            BridgeTelegramBot bridgeTelegramBot = new BridgeTelegramBot(
-                    BridgeBotConfig.fromSpigotConfiguration(getConfig()),
-                    this
+            final PluginConfig config = PluginConfig.fromSpigotConfiguration(getConfig());
+            final BridgeTelegramBot bridgeTelegramBot = new BridgeTelegramBot(
+                    getLogger(),
+                    config,
+                    message -> getServer().broadcastMessage(message)
             );
+            final MinecraftChatListener minecraftChatListener = new MinecraftChatListener(
+                    getLogger(),
+                    bridgeTelegramBot,
+                    config.tgMessageTemplate()
+            );
+
             TelegramBotsApi api = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotSession = api.registerBot(bridgeTelegramBot);
-            getServer().getPluginManager().registerEvents(bridgeTelegramBot, this);
+            getServer().getPluginManager().registerEvents(minecraftChatListener, this);
+            minecraftChatListener.start();
         } catch (TelegramApiException e) {
             getLogger().log(Level.SEVERE, "Could not initialize Telegram API", e);
         }

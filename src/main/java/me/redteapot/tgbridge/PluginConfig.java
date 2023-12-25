@@ -16,7 +16,7 @@ import static me.redteapot.tgbridge.utils.Sanitizing.sanitizeForTelegram;
 import static me.redteapot.tgbridge.utils.UserUtils.fallback;
 import static me.redteapot.tgbridge.utils.UserUtils.getFullName;
 
-public record BridgeBotConfig(
+public record PluginConfig(
         String username,
         String token,
         long chatID,
@@ -45,8 +45,8 @@ public record BridgeBotConfig(
                 sanitizeForTelegram(event.getMessage()));
     }
 
-    public static BridgeBotConfig fromSpigotConfiguration(Configuration configuration) {
-        return new BridgeBotConfig(
+    public static PluginConfig fromSpigotConfiguration(Configuration configuration) {
+        return new PluginConfig(
                 configuration.getString("telegram.botUsername"),
                 configuration.getString("telegram.botToken"),
                 configuration.getLong("telegram.chatID"),
