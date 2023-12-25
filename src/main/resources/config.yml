@@ -1,22 +1,41 @@
 # Settings for the Telegram side
 telegram:
+  # Bot username in Telegram
   botUsername: MinecraftTGBridgeBot
+  # Telegram bot token as given by BotFather
   botToken: 1234
+  # Telegram chat ID
   chatID: 1234
+  # Telegram thread ID.
+  # The bot will post messages from this thread in Minecraft chat,
+  # and it will post messages from Minecraft chat in this thread.
   threadID: 1234
-  # Template of messages to be posted in Telegram chat. MarkdownV2 is supported.
+  # Template of messages to be posted in Telegram chat.
+  # MarkdownV2 is supported in the template,
+  # but escaped in the substituted strings (e.g., messages and names).
+  #
+  # Supported substitutions:
   # {username} - player name
   # {message} - message
+  #
+  # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  # To escape backslash, use another backslash.
   messageTemplate: "*{username}*:\n{message}"
+
 
 # Settings for the Minecraft side
 mc:
-  # Template of messages to be posted in Minecraft chat. Formatting codes are supported.
+  # Template of messages to be posted in Minecraft chat.
+  # Formatting codes are supported in the template,
+  # but removed from substituted strings (e.g., messages and names).
+  #
   # Supported substitutions:
   # {firstName} - user's first name
-  # {lastName} - user's last name
+  # {lastName} - user's last name, if it exists. Otherwise, {firstName} will be used.
   # {fullName} - user's first and last name separated with space
-  # {username} - username
+  # {username} - username, if it exists. Otherwise, {fullName} will be used.
   # {message} - message
+  #
   # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  # To escape backslash, use another backslash.
   messageTemplate: "§b[TG]§r <{fullName}> {message}"

@@ -23,44 +23,37 @@ public class Template<C> {
             final char c = template.charAt(i);
 
             switch (state) {
-                case TEXT:
+                case TEXT -> {
                     switch (c) {
-                        case '\\':
-                            state = ParserState.ESCAPE;
-                            break;
-                        case '{':
+                        case '\\' -> state = ParserState.ESCAPE;
+                        case '{' -> {
                             fragments.add(new TextFragment<>(token.toString()));
                             token.setLength(0);
                             state = ParserState.SUBSTITUTION;
-                            break;
-                        default:
-                            token.append(c);
-                            break;
+                        }
+                        default -> token.append(c);
                     }
-                    break;
+                }
 
-                case ESCAPE:
+                case ESCAPE -> {
                     token.append(c);
                     state = ParserState.TEXT;
-                    break;
+                }
 
-                case SUBSTITUTION:
-                    switch (c) {
-                        case '}':
-                            final String substitution = token.toString();
-                            token.setLength(0);
-                            final Substitutor<C> substitutor = substitutors.get(substitution);
-                            if (substitutor == null) {
-                                throw new IllegalArgumentException("Invalid substitution: " + substitution);
-                            }
-                            fragments.add(new SubstitutionFragment<>(substitutor));
-                            state = ParserState.TEXT;
-                            break;
-                        default:
-                            token.append(c);
-                            break;
+                case SUBSTITUTION -> {
+                    if (c == '}') {
+                        final String substitution = token.toString();
+                        token.setLength(0);
+                        final Substitutor<C> substitutor = substitutors.get(substitution);
+                        if (substitutor == null) {
+                            throw new IllegalArgumentException("Invalid substitution: " + substitution);
+                        }
+                        fragments.add(new SubstitutionFragment<>(substitutor));
+                        state = ParserState.TEXT;
+                    } else {
+                        token.append(c);
                     }
-                    break;
+                }
             }
         }
     }
