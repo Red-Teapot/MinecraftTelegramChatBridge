@@ -3,7 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.redteapot</groupId>
     <artifactId>tg-bridge</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
+
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+    </properties>
 
     <repositories>
         <repository>
