@@ -2,10 +2,18 @@ package me.redteapot.tgbridge.utils;
 
 public class Sanitizing {
     public static String sanitizeForMinecraft(String string) {
-        return string.replace("§", "");
+        if (string == null) {
+            return null;
+        } else {
+            return string.replace("§", "");
+        }
     }
 
     public static String sanitizeForTelegram(String string) {
+        if (string == null) {
+            return null;
+        }
+
         final StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < string.length(); i++) {
