@@ -23,7 +23,9 @@ public class TemplateParser {
                     switch (c) {
                         case '\\' -> state = State.ESCAPE;
                         case '{' -> {
-                            fragments.add(new Text(token.toString()));
+                            if (!token.isEmpty()) {
+                                fragments.add(new Text(token.toString()));
+                            }
                             token.setLength(0);
                             state = State.SUBSTITUTION;
                         }
@@ -50,6 +52,16 @@ public class TemplateParser {
                     }
                 }
             }
+        }
+
+        switch (state) {
+            case TEXT -> {
+                if (!token.isEmpty()) {
+                    fragments.add(new Text(token.toString()));
+                }
+            }
+            case ESCAPE -> fragments.add(new Text(token + "\\"));
+            case SUBSTITUTION -> fragments.add(new Text("{" + token));
         }
 
         return fragments;
