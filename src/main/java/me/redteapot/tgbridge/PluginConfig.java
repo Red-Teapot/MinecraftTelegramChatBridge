@@ -1,7 +1,7 @@
 package me.redteapot.tgbridge;
 
-import me.redteapot.tgbridge.utils.Template;
-import me.redteapot.tgbridge.utils.Template.Substitutor;
+import me.redteapot.tgbridge.templates.Template;
+import me.redteapot.tgbridge.templates.TemplateSubstitutor;
 import me.redteapot.tgbridge.utils.UserUtils;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -24,8 +24,8 @@ public record PluginConfig(
         Template<Message> mcMessageTemplate,
         Template<AsyncPlayerChatEvent> tgMessageTemplate
 ) {
-    private static final Map<String, Substitutor<Message>> mcSubstitutors = new HashMap<>();
-    private static final Map<String, Substitutor<AsyncPlayerChatEvent>> tgSubstitutors = new HashMap<>();
+    private static final Map<String, TemplateSubstitutor<Message>> mcSubstitutors = new HashMap<>();
+    private static final Map<String, TemplateSubstitutor<AsyncPlayerChatEvent>> tgSubstitutors = new HashMap<>();
 
     static {
         mcSubstitutors.put("firstName", message ->
@@ -51,8 +51,8 @@ public record PluginConfig(
                 configuration.getString("telegram.botToken"),
                 configuration.getLong("telegram.chatID"),
                 configuration.getInt("telegram.threadID"),
-                new Template<>(configuration.getString("mc.messageTemplate"), mcSubstitutors),
-                new Template<>(configuration.getString("telegram.messageTemplate"), tgSubstitutors)
+                Template.fromString(configuration.getString("mc.messageTemplate"), mcSubstitutors),
+                Template.fromString(configuration.getString("telegram.messageTemplate"), tgSubstitutors)
         );
     }
 }

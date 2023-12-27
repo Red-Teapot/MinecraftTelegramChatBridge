@@ -1,6 +1,6 @@
 package me.redteapot.tgbridge;
 
-import me.redteapot.tgbridge.utils.Template;
+import me.redteapot.tgbridge.templates.Template;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
