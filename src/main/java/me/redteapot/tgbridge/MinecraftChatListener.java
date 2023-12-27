@@ -35,7 +35,7 @@ public class MinecraftChatListener extends Thread implements Listener {
             } catch (InterruptedException e) {
                 break;
             } catch (Exception e) {
-                logger.log(Level.WARNING, "Failed to handle chat event", e);
+                logger.log(Level.WARNING, "Failed to handle Minecraft chat event", e);
             }
         }
     }
@@ -44,7 +44,7 @@ public class MinecraftChatListener extends Thread implements Listener {
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         if (!events.offer(event)) {
-            logger.warning("Failed to queue chat event");
+            logger.warning("Failed to queue Minecraft chat event");
         }
     }
 }
