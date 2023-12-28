@@ -6,7 +6,7 @@
     <version>${revision}</version>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
+        <revision>v0.0.1-SNAPSHOT</revision>
     </properties>
 
     <repositories>
