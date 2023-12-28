@@ -20,7 +20,7 @@ public class Sanitizing {
             final char c = string.charAt(i);
 
             switch (c) {
-                case '*', '_', '~', '(', ')', '[', ']', '.', '`', '|', '\\' -> result.append('\\').append(c);
+                case '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\' -> result.append('\\').append(c);
                 default -> result.append(c);
             }
         }
