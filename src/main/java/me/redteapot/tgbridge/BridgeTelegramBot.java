@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BridgeTelegramBot extends TelegramLongPollingBot implements MessageSender {
+public final class BridgeTelegramBot extends TelegramLongPollingBot implements MessageSender {
     private final PluginConfig config;
     private final Logger logger;
     private final MessageSender minecraftMessageSender;

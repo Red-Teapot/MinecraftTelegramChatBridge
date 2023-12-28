@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class TemplateParser {
+public final class TemplateParser {
+    private TemplateParser() { }
+
     private static final Pattern SUBSTITUTION_KEY = Pattern.compile("^[a-zA-Z0-9]+$");
 
     public static List<TemplateFragment> parseTemplate(String template) {
@@ -21,15 +23,21 @@ public class TemplateParser {
             switch (state) {
                 case TEXT -> {
                     switch (c) {
-                        case '\\' -> state = State.ESCAPE;
-                        case '{' -> {
+                        case '\\':
+                            state = State.ESCAPE;
+                            break;
+
+                        case '{':
                             if (!token.isEmpty()) {
                                 fragments.add(new Text(token.toString()));
                             }
                             token.setLength(0);
                             state = State.SUBSTITUTION;
-                        }
-                        default -> token.append(c);
+                            break;
+
+                        default:
+                            token.append(c);
+                            break;
                     }
                 }
 
@@ -51,6 +59,8 @@ public class TemplateParser {
                         token.append(c);
                     }
                 }
+
+                default -> throw new IllegalStateException("Unknown parser state: " + state);
             }
         }
 
@@ -62,6 +72,7 @@ public class TemplateParser {
             }
             case ESCAPE -> fragments.add(new Text(token + "\\"));
             case SUBSTITUTION -> fragments.add(new Text("{" + token));
+            default -> throw new IllegalStateException("Unknown parser state: " + state);
         }
 
         return fragments;

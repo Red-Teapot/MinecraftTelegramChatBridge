@@ -10,13 +10,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MinecraftChatListener extends Thread implements Listener {
+public final class MinecraftChatListener extends Thread implements Listener {
     private final Logger logger;
     private final MessageSender telegramMessageSender;
     private final Template<AsyncPlayerChatEvent> messageTemplate;
     private final BlockingQueue<AsyncPlayerChatEvent> events = new LinkedBlockingQueue<>();
 
-    public MinecraftChatListener(Logger logger, MessageSender telegramMessageSender, Template<AsyncPlayerChatEvent> messageTemplate) {
+    public MinecraftChatListener(
+            Logger logger,
+            MessageSender telegramMessageSender,
+            Template<AsyncPlayerChatEvent> messageTemplate
+    ) {
         this.logger = logger;
         this.telegramMessageSender = telegramMessageSender;
         this.messageTemplate = messageTemplate;

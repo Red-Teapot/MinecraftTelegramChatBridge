@@ -2,7 +2,9 @@ package me.redteapot.tgbridge.utils;
 
 import org.telegram.telegrambots.meta.api.objects.User;
 
-public class UserUtils {
+public final class UserUtils {
+    private UserUtils() { }
+
     public static String getFullName(User user) {
         final StringBuilder fullName = new StringBuilder();
 

@@ -1,5 +1,6 @@
 package me.redteapot.tgbridge;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -9,7 +10,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.util.logging.Level;
 
 @SuppressWarnings("unused")
-public class TelegramBridgePlugin extends JavaPlugin {
+public final class TelegramBridgePlugin extends JavaPlugin {
     private BotSession telegramBotSession = null;
 
     @Override
@@ -39,6 +40,8 @@ public class TelegramBridgePlugin extends JavaPlugin {
             minecraftChatListener.start();
         } catch (TelegramApiException e) {
             getLogger().log(Level.SEVERE, "Could not initialize Telegram API", e);
+        } catch (InvalidConfigurationException e) {
+            getLogger().log(Level.SEVERE, "Could not initialize the plugin: invalid configuration", e);
         }
     }
 

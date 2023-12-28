@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static me.redteapot.tgbridge.templates.TemplateParser.parseTemplate;
 
-public class Template<C> {
+public final class Template<C> {
     private final List<TemplateFragment> fragments;
     private final Map<String, TemplateSubstitutor<C>> substitutors;
 
