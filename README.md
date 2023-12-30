@@ -5,9 +5,15 @@ into Minecraft server chat and vice versa. Supports (only) Telegram threads.
 
 ## Usage
 
-1. Create a Telegram bot
-2. Specify bot username, token, chat and thread IDs in plugin config.
-   Default config file will be created if you launch the server without one.
+1. Install the plugin and run the server once to generate the
+   default config. You will need to edit it.
+2. Create a Telegram bot via BotFather. Copy the token and bot username provided by
+   BotFather into the plugin config.
+3. If you need the chat and thread ID, set `allowChatIDCommand` to `true` in the plugin config,
+   start the server and run the `/chatid` command in the thread you want to
+   use the bot in.
+4. Specify chat and thread IDs in plugin config.
+5. Optionally, set `allowChatIDCommand` to `false`.
 
 ## Development
 

@@ -22,6 +22,7 @@ public record PluginConfig(
         String token,
         long chatID,
         int threadID,
+        boolean allowChatIDCommand,
         Template<Message> mcMessageTemplate,
         Template<AsyncPlayerChatEvent> tgMessageTemplate
 ) {
@@ -53,6 +54,7 @@ public record PluginConfig(
                 requireString(configuration, "telegram.botToken"),
                 configuration.getLong("telegram.chatID"),
                 configuration.getInt("telegram.threadID"),
+                configuration.getBoolean("telegram.allowChatIDCommand"),
                 Template.fromString(requireString(configuration, "mc.messageTemplate"), MC_SUBSTITUTORS),
                 Template.fromString(requireString(configuration, "telegram.messageTemplate"), TG_SUBSTITUTORS)
         );
