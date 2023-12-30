@@ -21,6 +21,8 @@ telegram:
   # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
   # To escape backslash, use another backslash.
   messageTemplate: "*{username}*:\n{message}"
+  # Whether to allow the /chatid command that shows current chat and thread IDs
+  allowChatIDCommand: false
 
 
 # Settings for the Minecraft side
