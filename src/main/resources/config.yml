@@ -24,7 +24,6 @@ telegram:
   # Whether to allow the /chatid command that shows current chat and thread IDs
   allowChatIDCommand: false
 
-
 # Settings for the Minecraft side
 mc:
   # Template of messages to be posted in Minecraft chat.
@@ -41,3 +40,6 @@ mc:
   # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
   # To escape backslash, use another backslash.
   messageTemplate: "§b[TG]§r <{fullName}> {message}"
+  # Whether to format messages in Minecraft similarly to original formatting in Telegram.
+  # Currently, that preserves bold, italic, underline, strikethrough and spoilers.
+  passFormattingFromTelegram: true
