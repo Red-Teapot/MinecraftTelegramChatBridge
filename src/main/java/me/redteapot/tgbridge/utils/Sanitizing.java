@@ -1,5 +1,7 @@
 package me.redteapot.tgbridge.utils;
 
+import me.redteapot.tgbridge.mc.FormatCode;
+
 public final class Sanitizing {
     private Sanitizing() { }
 
@@ -7,7 +9,7 @@ public final class Sanitizing {
         if (string == null) {
             return null;
         } else {
-            return string.replace("§", "");
+            return string.replace(FormatCode.MARKER_STR, "");
         }
     }
 

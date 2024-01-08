@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static me.redteapot.tgbridge.utils.Sanitizing.sanitizeForMinecraft;
 import static me.redteapot.tgbridge.utils.Sanitizing.sanitizeForTelegram;
+import static me.redteapot.tgbridge.utils.TelegramToMinecraftFormattingConverter.formatForMinecraft;
 import static me.redteapot.tgbridge.utils.UserUtils.fallback;
 import static me.redteapot.tgbridge.utils.UserUtils.getFullName;
 
@@ -26,37 +27,38 @@ public record PluginConfig(
         Template<Message> mcMessageTemplate,
         Template<AsyncPlayerChatEvent> tgMessageTemplate
 ) {
-    private static final Map<String, TemplateSubstitutor<Message>> MC_SUBSTITUTORS = new HashMap<>();
-    private static final Map<String, TemplateSubstitutor<AsyncPlayerChatEvent>> TG_SUBSTITUTORS = new HashMap<>();
-
-    static {
-        MC_SUBSTITUTORS.put("firstName", message ->
-                sanitizeForMinecraft(message.getFrom().getFirstName()));
-        MC_SUBSTITUTORS.put("lastName", message ->
-                sanitizeForMinecraft(fallback(message.getFrom(), User::getLastName, User::getFirstName)));
-        MC_SUBSTITUTORS.put("fullName", message ->
-                sanitizeForMinecraft(getFullName(message.getFrom())));
-        MC_SUBSTITUTORS.put("username", message ->
-                sanitizeForMinecraft(fallback(message.getFrom(), User::getUserName, UserUtils::getFullName)));
-        MC_SUBSTITUTORS.put("message", message ->
-                sanitizeForMinecraft(message.getText()));
-
-        TG_SUBSTITUTORS.put("username", event ->
-                sanitizeForTelegram(event.getPlayer().getName()));
-        TG_SUBSTITUTORS.put("message", event ->
-                sanitizeForTelegram(event.getMessage()));
-    }
-
+    @SuppressWarnings("Convert2MethodRef")
     public static PluginConfig fromSpigotConfiguration(Configuration configuration)
     throws InvalidConfigurationException {
+        final Map<String, TemplateSubstitutor<Message>> mcSubstitutors = new HashMap<>();
+        mcSubstitutors.put("firstName", message ->
+                sanitizeForMinecraft(message.getFrom().getFirstName()));
+        mcSubstitutors.put("lastName", message ->
+                sanitizeForMinecraft(fallback(message.getFrom(), User::getLastName, User::getFirstName)));
+        mcSubstitutors.put("fullName", message ->
+                sanitizeForMinecraft(getFullName(message.getFrom())));
+        mcSubstitutors.put("username", message ->
+                sanitizeForMinecraft(fallback(message.getFrom(), User::getUserName, UserUtils::getFullName)));
+        if (configuration.getBoolean("mc.passFormattingFromTelegram")) {
+            mcSubstitutors.put("message", message -> formatForMinecraft(message));
+        } else {
+            mcSubstitutors.put("message", message -> sanitizeForMinecraft(message.getText()));
+        }
+
+        final Map<String, TemplateSubstitutor<AsyncPlayerChatEvent>> tgSubstitutors = new HashMap<>();
+        tgSubstitutors.put("username", event ->
+                sanitizeForTelegram(event.getPlayer().getName()));
+        tgSubstitutors.put("message", event ->
+                sanitizeForTelegram(event.getMessage()));
+
         return new PluginConfig(
                 requireString(configuration, "telegram.botUsername"),
                 requireString(configuration, "telegram.botToken"),
                 configuration.getLong("telegram.chatID"),
                 configuration.getInt("telegram.threadID"),
                 configuration.getBoolean("telegram.allowChatIDCommand"),
-                Template.fromString(requireString(configuration, "mc.messageTemplate"), MC_SUBSTITUTORS),
-                Template.fromString(requireString(configuration, "telegram.messageTemplate"), TG_SUBSTITUTORS)
+                Template.fromString(requireString(configuration, "mc.messageTemplate"), mcSubstitutors),
+                Template.fromString(requireString(configuration, "telegram.messageTemplate"), tgSubstitutors)
         );
     }
 
