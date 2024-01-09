@@ -22,7 +22,7 @@ public record PluginConfig(
         String username,
         String token,
         long chatID,
-        int threadID,
+        Integer threadID,
         boolean allowChatIDCommand,
         Template<Message> mcMessageTemplate,
         Template<AsyncPlayerChatEvent> tgMessageTemplate
@@ -55,7 +55,7 @@ public record PluginConfig(
                 requireString(configuration, "telegram.botUsername"),
                 requireString(configuration, "telegram.botToken"),
                 configuration.getLong("telegram.chatID"),
-                configuration.getInt("telegram.threadID"),
+                optionalInteger(configuration, "telegram.threadID"),
                 configuration.getBoolean("telegram.allowChatIDCommand"),
                 Template.fromString(requireString(configuration, "mc.messageTemplate"), mcSubstitutors),
                 Template.fromString(requireString(configuration, "telegram.messageTemplate"), tgSubstitutors)
@@ -68,6 +68,14 @@ public record PluginConfig(
             throw new InvalidConfigurationException("Option " + path + " is required but not provided");
         } else {
             return value;
+        }
+    }
+
+    private static Integer optionalInteger(Configuration configuration, String path) {
+        if (configuration.contains(path, true)) {
+            return configuration.getInt(path);
+        } else {
+            return null;
         }
     }
 }

@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -75,7 +76,7 @@ public final class BridgeTelegramBot extends TelegramLongPollingBot implements M
     }
 
     private void forwardToMinecraft(Message message) throws Exception {
-        if (config.chatID() != message.getChatId() || config.threadID() != message.getMessageThreadId()) {
+        if (config.chatID() != message.getChatId() || !Objects.equals(config.threadID(), message.getMessageThreadId())) {
             return;
         }
 

@@ -45,6 +45,19 @@ public class TelegramToMinecraftFormattingConverterTests {
     }
 
     @Test
+    public void testFormatForMinecraft_WhenOneEntityIsStrikethrough_ShouldFormatAccordingly() {
+        final Message message = new Message();
+        message.setText("foo bar");
+        message.setEntities(List.of(
+                new MessageEntity("strikethrough", 4, 3)
+        ));
+
+        final String formatted = formatForMinecraft(message);
+
+        assertEquals("foo §r§mbar§r", formatted);
+    }
+
+    @Test
     public void testFormatForMinecraft_WhenEntitiesCoverSameRange_ShouldFormatAccordingly() {
         final Message message = new Message();
         message.setText("foo bar");

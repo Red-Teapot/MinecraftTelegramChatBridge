@@ -143,6 +143,10 @@ public final class TelegramToMinecraftFormattingConverter {
             if (underline == Status.ENABLE) {
                 output.append(FormatCode.UNDERLINE);
             }
+
+            if (strikethrough == Status.ENABLE) {
+                output.append(FormatCode.STRIKETHROUGH);
+            }
         }
     }
 

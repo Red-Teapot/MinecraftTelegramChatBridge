@@ -9,6 +9,7 @@ telegram:
   # Telegram thread ID.
   # The bot will post messages from this thread in Minecraft chat,
   # and it will post messages from Minecraft chat in this thread.
+  # If your chat does not have threads, set this to `null`.
   threadID: 1234
   # Template of messages to be posted in Telegram chat.
   # MarkdownV2 is supported in the template,
