@@ -24,6 +24,70 @@ telegram:
   messageTemplate: "*{username}*:\n{message}"
   # Whether to allow the /chatid command that shows current chat and thread IDs
   allowChatIDCommand: false
+  # Whether to announce getting Minecraft advancements
+  announceAdvancements: true
+  # Template of advancement announcements to be posted in Telegram chat.
+  # MarkdownV2 is supported in the template,
+  # but escaped in the substituted strings (e.g., messages and names).
+  #
+  # Supported substitutions:
+  # {username} - player name
+  # {title} - advancement title
+  # {description} - advancement description
+  #
+  # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  # To escape backslash, use another backslash.
+  advancementTemplate: "*{username}* has made an advancement: {title}\n\n_{description}_"
+  # Whether to announce players joining the game
+  announcePlayersJoining: true
+  # Template of player joining announcements to be posted in Telegram chat.
+  # MarkdownV2 is supported in the template,
+  # but escaped in the substituted strings (e.g., messages and names).
+  #
+  # Supported substitutions:
+  # {username} - player name
+  #
+  # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  # To escape backslash, use another backslash.
+  playerJoinTemplate: "*{username}* has joined the game"
+  # Whether to announce players quitting the game
+  announcePlayersQuitting: true
+  # Template of player quitting announcements to be posted in Telegram chat.
+  # MarkdownV2 is supported in the template,
+  # but escaped in the substituted strings (e.g., messages and names).
+  #
+  # Supported substitutions:
+  # {username} - player name
+  #
+  # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  # To escape backslash, use another backslash.
+  playerQuitTemplate: "*{username}* has left the game"
+  # Whether to announce player deaths
+  announcePlayerDeaths: true
+  # Template of player death announcements to be posted in Telegram chat.
+  # MarkdownV2 is supported in the template,
+  # but escaped in the substituted strings (e.g., messages and names).
+  #
+  # Supported substitutions:
+  # {username} - player name
+  # {message} - the Minecraft death message
+  #
+  # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  # To escape backslash, use another backslash.
+  playerDeathTemplate: "*{username}* has perished\n\n_{message}_"
+  # Whether to forward the /me command
+  forwardMeCommand: true
+  # Template of player /me commands to be posted in Telegram chat.
+  # MarkdownV2 is supported in the template,
+  # but escaped in the substituted strings (e.g., messages and names).
+  #
+  # Supported substitutions:
+  # {username} - player name
+  # {message} - the Minecraft death message
+  #
+  # To escape curly braces, use backslash, e.g. '\{foo}' will be posted as '{foo}'.
+  # To escape backslash, use another backslash.
+  playerMeCommandTemplate: "_*{username}* {message}_"
 
 # Settings for the Minecraft side
 mc:
