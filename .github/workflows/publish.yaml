@@ -14,7 +14,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Run the Maven verify phase
+      - name: Insert proper version into plugin.yml
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "version: 0.0.1-SNAPSHOT"
+          replace: "version: ${{github.ref_name}}"
+          regex: false
+          include: "src/main/resources/plugin.yml"
+      - name: Run the Maven verify and package phases
         run: mvn -Drevision=${{github.ref_name}} --batch-mode --update-snapshots verify package
       - name: Attach the JAR to release
         uses: svenstaro/upload-release-action@v2
